@@ -1,4 +1,4 @@
-const INPUT: &str = include_str!("001.input.txt");
+const INPUT: &str = include_str!("./inputs/001.input.txt");
 
 fn main() {
     let destination_floor = get_destination_floor(INPUT);
