@@ -8,6 +8,9 @@ fn main() {
         "V1 Gifted Houses: {}",
         gifted_houses_result_v1.unique_house_gifted_count
     );
+
+    let gifted_houses_result_v2 = get_houses_gifted_v2(INPUT);
+    println!("V2 Gifted Houses: {}", gifted_houses_result_v2)
 }
 
 struct Coordinates {
@@ -47,11 +50,6 @@ fn get_houses_gifted(
             _ => eprintln!("Invalid character: {}", char),
         }
 
-        // if !visited_houses.contains_key(&current_coordinates.y) {
-        //     let inner_map = HashMap::new();
-        //     visited_houses.insert(current_coordinates.y, inner_map);
-        // }
-
         if let Some(inner_map) = visited_houses.get_mut(&current_coordinates.y) {
             if let Some(count) = inner_map.get_mut(&current_coordinates.x) {
                 *count += 1;
@@ -71,4 +69,25 @@ fn get_houses_gifted(
         unique_house_gifted_count,
         visited_houses,
     };
+}
+
+fn get_houses_gifted_v2(input: &str) -> i32 {
+    let santa_steps: String = input
+        .chars()
+        .enumerate()
+        .filter(|&(index, _)| index == 0 || index % 2 == 0)
+        .map(|(_, c)| c)
+        .collect();
+    let robo_santa_steps: String = input
+        .chars()
+        .enumerate()
+        .filter(|&(index, _)| index != 0 && index % 2 != 0)
+        .map(|(_, c)| c)
+        .collect();
+
+    let santa_results = get_houses_gifted(&santa_steps, None);
+    let robo_santa_results =
+        get_houses_gifted(&robo_santa_steps, Some(santa_results.visited_houses));
+
+    return santa_results.unique_house_gifted_count + robo_santa_results.unique_house_gifted_count;
 }
