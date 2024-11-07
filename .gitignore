@@ -6,3 +6,6 @@
 
 # Rust
 rust/**/target
+
+# Synced input files
+*/inputs/

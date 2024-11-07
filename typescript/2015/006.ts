@@ -15,14 +15,15 @@ For example:
 
 After following the instructions, how many lights are lit?
  */
+import { readFileSync } from "node:fs";
 
-import { INPUT_SIX } from "./006.input.ts";
+const input = readFileSync("../../../inputs/2015/006.txt", "utf-8");
 
 const STARTING_GRID: Array<Array<boolean>> = new Array(1000)
   .fill(null)
   .map(() => new Array(1000).fill(false));
 
-const instructions = INPUT_SIX.split("\n");
+const instructions = input.split("\n");
 
 const ixn_regex =
   /(?<action>turn on|turn off|toggle) (?<x1>\d+),(?<y1>\d+) through (?<x2>\d+),(?<y2>\d+)/;
