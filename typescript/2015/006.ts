@@ -15,9 +15,8 @@ For example:
 
 After following the instructions, how many lights are lit?
  */
-import { readFileSync } from "node:fs";
-
-const input = readFileSync("../../../inputs/2015/006.txt", "utf-8");
+const inputPath = new URL("../inputs/2015.006.txt", import.meta.url).pathname;
+const input = Deno.readTextFileSync(inputPath);
 
 const STARTING_GRID: Array<Array<boolean>> = new Array(1000)
   .fill(null)

@@ -25,7 +25,8 @@ For example:
 
  */
 
-import { INPUT_THREE } from "./003.input.ts";
+const inputPath = new URL("../inputs/2015.003.txt", import.meta.url).pathname;
+const input = Deno.readTextFileSync(inputPath);
 
 type VisitedHouses = Record<number, Record<number, number>>;
 
@@ -66,7 +67,7 @@ function getHousesGifted(input: Array<string>, previouslyVisitedHouses?: Visited
   return { uniqueHouseGiftedCount, visitedHouses };
 }
 
-console.log(getHousesGifted(INPUT_THREE.split("")).uniqueHouseGiftedCount);
+console.log(getHousesGifted(input.split("")).uniqueHouseGiftedCount);
 
 function getHousesGiftedV2(input: string) {
   const santaSteps = input.split("").filter((_, index) => index === 0 || index % 2 === 0);
@@ -78,4 +79,4 @@ function getHousesGiftedV2(input: string) {
   return santaResults.uniqueHouseGiftedCount + roboSantaResults.uniqueHouseGiftedCount;
 }
 
-console.log(getHousesGiftedV2(INPUT_THREE));
+console.log(getHousesGiftedV2(input));
