@@ -1,4 +1,4 @@
-const INPUT: &str = include_str!("./inputs/002.input.txt");
+const INPUT: &str = include_str!("../../../inputs/2015.002.txt");
 
 fn main() {
     let total_area = get_total_wrapping_paper_area(INPUT);
