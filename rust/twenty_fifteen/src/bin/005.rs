@@ -1,6 +1,6 @@
 use std::collections::HashMap;
 
-const INPUT: &str = include_str!("./inputs/005.input.txt");
+const INPUT: &str = include_str!("../../../inputs/2015.005.txt");
 
 fn main() {
     println!("Nice string v1: {}", get_nice_string_count(is_nice_string));

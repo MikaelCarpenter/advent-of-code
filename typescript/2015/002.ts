@@ -24,9 +24,10 @@ For example:
 How many total feet of ribbon should they order?
  */
 
-import { INPUT_TWO } from "./002.input.ts";
+const inputPath = new URL("../inputs/2015.002.txt", import.meta.url).pathname;
+const input = Deno.readTextFileSync(inputPath);
 
-const packageDimensions = INPUT_TWO.split("\n");
+const packageDimensions = input.split("\n");
 
 interface Dimensions {
   length: number;

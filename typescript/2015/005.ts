@@ -20,7 +20,9 @@ How many strings are nice?
  */
 
 import { assertEquals } from "jsr:@std/assert";
-import { INPUT_FIVE } from "./005.input.ts";
+
+const inputPath = new URL("../inputs/2015.005.txt", import.meta.url).pathname;
+const input = Deno.readTextFileSync(inputPath);
 
 const VOWELS = ["a", "e", "i", "o", "u"];
 const NAUGHTY_SEQUENCES = ["ab", "cd", "pq", "xy"];
@@ -61,7 +63,7 @@ Deno.test("Examples", async (t) => {
 });
 
 function getNiceStringCount(testFxn: (input: string) => boolean) {
-  const lines = INPUT_FIVE.split("\n");
+  const lines = input.split("\n");
 
   const niceStringCount = lines.reduce((count, line) => {
     return testFxn(line) ? count + 1 : count;

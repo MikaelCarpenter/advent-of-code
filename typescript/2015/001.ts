@@ -17,7 +17,8 @@ Now, given the same instructions, find the position of the first character that 
 What is the position of the character that causes Santa to first enter the basement?
  */
 
-import { INPUT_ONE } from "./001.input.ts";
+const inputPath = new URL("../inputs/2015.001.txt", import.meta.url).pathname;
+const input = Deno.readTextFileSync(inputPath);
 
 function getDestinationFloor(input: string) {
   let floor = 0;
@@ -36,7 +37,7 @@ function getDestinationFloor(input: string) {
   return floor;
 }
 
-console.log("Destination floor: ", getDestinationFloor(INPUT_ONE));
+console.log("Destination floor: ", getDestinationFloor(input));
 
 function getBasementPosition(input: string) {
   let floor = 0;
@@ -58,4 +59,4 @@ function getBasementPosition(input: string) {
   }
 }
 
-console.log("Basement position: ", getBasementPosition(INPUT_ONE));
+console.log("Basement position: ", getBasementPosition(input));

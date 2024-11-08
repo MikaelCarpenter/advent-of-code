@@ -1,6 +1,6 @@
 use std::collections::HashMap;
 
-const INPUT: &str = include_str!("./inputs/003.input.txt");
+const INPUT: &str = include_str!("../../../inputs/2015.003.txt");
 
 fn main() {
     let gifted_houses_result_v1 = get_houses_gifted(INPUT, None);
