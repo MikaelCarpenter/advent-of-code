@@ -17,55 +17,77 @@ After following the instructions, how many lights are lit?
  */
 const inputPath = new URL("../inputs/2015.006.txt", import.meta.url).pathname;
 const input = Deno.readTextFileSync(inputPath);
-
-const STARTING_GRID: Array<Array<boolean>> = new Array(1000)
-  .fill(null)
-  .map(() => new Array(1000).fill(false));
-
 const instructions = input.split("\n");
 
-const ixn_regex =
-  /(?<action>turn on|turn off|toggle) (?<x1>\d+),(?<y1>\d+) through (?<x2>\d+),(?<y2>\d+)/;
+type LightGrid = Array<Array<boolean>>;
 
-interface IxnMatch {
-  groups?: {
-    action?: "turn on" | "turn off" | "toggle";
-    x1?: string;
-    x2?: string;
-    y1?: string;
-    y2?: string;
+function constructStartingGrid(): LightGrid {
+  return new Array(1000).fill(null).map(() => new Array(1000).fill(false));
+}
+
+const ixn_regex =
+  /(?<action>turn on|turn off|toggle) (?<x1Value>\d+),(?<y1Value>\d+) through (?<x2Value>\d+),(?<y2Value>\d+)/;
+
+function getIxnComponents(ixn: string) {
+  const match = ixn.match(ixn_regex);
+  if (
+    !match ||
+    !match.groups ||
+    !match.groups.action ||
+    !match.groups.x1Value ||
+    !match.groups.x2Value ||
+    !match.groups.y1Value ||
+    !match.groups.y2Value
+  ) {
+    console.error(`Couldn't parse ixn: ${ixn}`);
+    return null;
+  }
+
+  return {
+    action: match.groups.action,
+    x1: parseInt(match.groups.x1Value, 10),
+    x2: parseInt(match.groups.x2Value, 10),
+    y1: parseInt(match.groups.y1Value, 10),
+    y2: parseInt(match.groups.y2Value, 10),
   };
 }
 
-for (const ixn of instructions) {
-  const match: IxnMatch | null = ixn.match(ixn_regex);
-
-  if (match) {
-    const { action, x1, x2, y1, y2 } = match.groups || {};
-
-    for (let i = parseInt(x1 || ""); i <= parseInt(x2 || ""); i++) {
-      for (let j = parseInt(y1 || ""); j <= parseInt(y2 || ""); j++) {
-        if (action === "turn on") {
-          STARTING_GRID[i][j] = true;
-        } else if (action === "turn off") {
-          STARTING_GRID[i][j] = false;
-        } else if (action === "toggle") {
-          STARTING_GRID[i][j] = !STARTING_GRID[i][j];
-        } else {
-          console.log("default case hit", i, j);
-        }
-      }
-    }
-  } else {
-    console.log("NO MATCH");
-  }
+function countLights(grid: LightGrid) {
+  return grid.reduce((count, row) => {
+    return count + row.filter(Boolean).length;
+  }, 0);
 }
 
-const onCount = STARTING_GRID.reduce((count, row) => {
-  return count + row.filter(Boolean).length;
-}, 0);
+function processIxns() {
+  const grid = constructStartingGrid();
 
-console.log(`COUNT = ${onCount}`);
+  for (const ixn of instructions) {
+    const ixnComponents = getIxnComponents(ixn);
+
+    if (ixnComponents) {
+      const { action, x1, x2, y1, y2 } = ixnComponents;
+
+      for (let i = x1; i <= x2; i++) {
+        for (let j = y1; j <= y2; j++) {
+          if (action === "turn on") {
+            grid[i][j] = true;
+          } else if (action === "turn off") {
+            grid[i][j] = false;
+          } else if (action === "toggle") {
+            grid[i][j] = !grid[i][j];
+          } else {
+            console.log("default case hit", i, j);
+          }
+        }
+      }
+    } else {
+      console.log("NO MATCH");
+    }
+  }
+  return countLights(grid);
+}
+
+console.log(`COUNT = ${processIxns()}`);
 
 /**
 --- Part Two ---
@@ -86,3 +108,52 @@ For example:
 turn on 0,0 through 0,0 would increase the total brightness by 1.
 toggle 0,0 through 999,999 would increase the total brightness by 2000000.
  */
+
+type VariableLightGrid = Array<Array<number>>;
+
+function constructVariableStartingGrid(): VariableLightGrid {
+  return new Array(1000).fill(null).map(() => new Array(1000).fill(0));
+}
+
+function calculateTotalBrightness(grid: VariableLightGrid) {
+  return grid.reduce((totalBrightness, row) => {
+    const rowBrightness = row.reduce((brightness, val) => {
+      return brightness + val;
+    }, 0);
+
+    return totalBrightness + rowBrightness;
+  }, 0);
+}
+
+function processIxnsV2() {
+  const grid = constructVariableStartingGrid();
+
+  for (const ixn of instructions) {
+    const ixnComponents = getIxnComponents(ixn);
+
+    if (ixnComponents) {
+      const { action, x1, x2, y1, y2 } = ixnComponents;
+
+      for (let i = x1; i <= x2; i++) {
+        for (let j = y1; j <= y2; j++) {
+          if (action === "turn on") {
+            grid[i][j] += 1;
+          } else if (action === "turn off") {
+            if (grid[i][j] >= 1) {
+              grid[i][j] -= 1;
+            }
+          } else if (action === "toggle") {
+            grid[i][j] += 2;
+          } else {
+            console.log("default case hit", i, j);
+          }
+        }
+      }
+    } else {
+      console.log("NO MATCH");
+    }
+  }
+  return calculateTotalBrightness(grid);
+}
+
+console.log(`TOTAL = ${processIxnsV2()}`);
