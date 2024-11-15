@@ -1,8 +1,8 @@
-# Advent of Code 
+# 🎄 Advent of Code 
 
 Just a collection of my solutions and a means to practice programming languages.
 
-## Commands
+## 🎁 Commands
 
 Sync input files to each language dir:
 ```sh
