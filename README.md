@@ -13,3 +13,15 @@ If you only care about syncing to one of the dirs:
 ```sh
 make typescript
 ```
+
+Running a Rust problem:
+```sh
+make rs year=2024 problem=001
+```
+
+Running a TS problem:
+
+```sh
+deno --allow-read typescript/2024/001.ts
+```
+

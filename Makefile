@@ -19,10 +19,10 @@ clean:
 
 .PHONY: rs
 rs:
-	@if [ -z "$(problem)" ]; then \
-		echo "Usage: make rs problem=005"; \
+	@if [ -z "$(problem)" ] || [ -z "$(year)" ]; then \
+		echo "Usage: make rs year=2015|2024 problem=005"; \
 		exit 1; \
 	fi
-	@echo "Running Rust solution $(problem)..."
-	@cd rust/twenty_fifteen && cargo run --bin $(problem) -q
+	@echo "Running Rust solution $(problem) from $(year)..."
+	@cd rust/$(shell if [ "$(year)" = "2015" ]; then echo "twenty_fifteen"; else echo "twenty_twenty-four"; fi) && cargo run --bin $(problem) -q
 	
